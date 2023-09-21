@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: order-service
+      POSTGRES_PASSWORD: order-service
+      POSTGRES_DB: order-service
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    command: mvn clean install
+    links:
+      - db
+    depends_on:
+      - db
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/order-service
+      SPRING_DATASOURCE_USERNAME: order-service
+      SPRING_DATASOURCE_PASSWORD: order-service
