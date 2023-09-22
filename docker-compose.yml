@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   db:
+    container_name: POSTGRESQL
     image: postgres:latest
     environment:
       POSTGRES_USER: order-service
@@ -9,16 +10,25 @@ services:
       POSTGRES_DB: order-service
     ports:
       - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U order-service" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
     build: .
-    command: mvn clean install
+    command: mvn install
     links:
       - db
     depends_on:
       - db
     ports:
       - "8090:8090"
+    tty: true
+    container_name: API_MOVEMENT_STOCK_ORDER_SERVICE
+    expose:
+        - 8090
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/order-service
       SPRING_DATASOURCE_USERNAME: order-service

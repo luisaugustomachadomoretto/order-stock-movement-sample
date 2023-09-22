@@ -25,16 +25,15 @@ public class EmailService {
 
     @Async
     public void sendEmail(String from, String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(from);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-
         try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(from);
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(body);
+
             javaMailSender.send(message);
             this.logEmail(from, to, subject, body);
-
         } catch (Exception e) {
             log.error(e.getMessage());
         }
