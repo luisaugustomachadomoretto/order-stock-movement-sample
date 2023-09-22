@@ -49,6 +49,14 @@ So endpoints are declared as bellow:
 ### How to run the project:
 
 - Clone the project repository.
+- Change the email configurations from application.yml line 26
+```
+mail:
+  host: smtp.example.com
+  port: 587
+  username: username
+  password: password
+```
 - build images: 
 
 ```bash

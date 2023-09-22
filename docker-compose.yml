@@ -33,3 +33,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/order-service
       SPRING_DATASOURCE_USERNAME: order-service
       SPRING_DATASOURCE_PASSWORD: order-service
+    healthcheck:
+      test: "curl --fail --silent localhost:8090/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s

@@ -1,41 +1,18 @@
-#FROM openjdk:8-alpine
-
-# Install Maven
-#RUN apk add maven
-
-# Copy the source code
-#COPY . /src
-
-# Copy pom.xml
-#COPY pom.xml pom.xml
-
-# Check for dependencies
-#RUN mvn dependency:build-classpath
-
-# Compile and generate the JAR
-#RUN mvn clean install -DmainClass=com.sibis.order.OrderService.OrderServiceApplication
-
-# Run the JAR file
-#ENTRYPOINT ["java", "-jar", "target/OrderService-0.0.1-SNAPSHOT.jar"]
-
-# Expose the JAR file
-#EXPOSE 8090
-
+#Java 8
 FROM openjdk:8-jdk-alpine
-
+#default working dir
 WORKDIR /app
-
+#copy pom to the app
 COPY pom.xml .
-
+#add maven to build
 RUN apk add maven
-
+#check for dependencies
 RUN mvn dependency:resolve
-
+#copy source code
 COPY src ./src
-
+#generate jar
 RUN mvn clean package -DskipTests=true
-
+#run jar
 ENTRYPOINT ["java", "-jar", "target/OrderService-0.0.1-SNAPSHOT.jar"]
-
 # Expose the JAR file
 EXPOSE 8090

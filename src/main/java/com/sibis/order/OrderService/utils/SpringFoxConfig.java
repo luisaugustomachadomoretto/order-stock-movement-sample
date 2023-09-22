@@ -8,8 +8,10 @@ package com.sibis.order.OrderService.utils;
 //import springfox.documentation.spring.web.plugins.Docket;
 //import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-// @Configuration
-//@EnableSwagger2
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+//@EnableSwagger
 public class SpringFoxConfig {
    // @Bean
     //public Docket api() {

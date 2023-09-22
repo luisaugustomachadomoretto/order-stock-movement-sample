@@ -38,6 +38,11 @@ public class OrderController {
         this.stockMovementService = stockMovementService;
     }
 
+    @GetMapping("orders/stock-movement-report")
+    public ResponseEntity<List<Order>> getAllOrdersWithStockMovement() {
+        return ResponseEntity.ok(this.orderService.findAllOrdersWithStockMovements());
+    }
+
     @GetMapping("orders")
     public ResponseEntity<List<Order>> getAllOrders() {
         return ResponseEntity.ok(this.orderService.findAllOrders());
