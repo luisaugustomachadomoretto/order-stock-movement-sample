@@ -53,10 +53,6 @@ public class OrderService {
         //Check stock before doing a movent from stock to order
         this.doAStockMovement(order);
 
-        //Order is completed so we send and email to advice
-        if (order.getStatus().equals(EnumOrderStatus.COMPLETED)) {
-            this.sendEmail(order);
-        }
         return this.orderRepository.save(order);
     }
 
@@ -128,7 +124,9 @@ public class OrderService {
                 "Your order id:" + order.getId() + " is completed!",
                 "Your order is been delivered to you!\n" +
                         "Thanks for choosing us.\n" +
-                        "Save this email to track your order!"
+                        "Save this code[" +
+                        java.util.UUID.randomUUID().toString() +
+                        "] to track your order!"
 
         );
     }
@@ -180,6 +178,8 @@ public class OrderService {
         //Log the order when the status is completed
         if (status.equals(EnumOrderStatus.COMPLETED)) {
             log.info("Order completed %s", orderUpdated);
+            //Order is completed so we send and email to advice
+            this.sendEmail(orderUpdated);
         }
         orderUpdated.setStatus(status);
         //Save and return
