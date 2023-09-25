@@ -20,6 +20,6 @@ public class User {
     private String name;
 
     @NonNull
-    @Column(nullable = false,name = "email")
+    @Column(nullable = false,name = "email", unique = true)
     private String email;
 }

@@ -28,4 +28,12 @@ public class StockMovement {
 
     @Column(name = "quantity")
     private Integer quantity;
+
+    public void increaseQuantity(Integer newQuantity){
+        this.quantity+= newQuantity;
+    }
+
+    public void decreaseQuantity(Integer newQuantity){
+        this.quantity-=newQuantity;
+    }
 }

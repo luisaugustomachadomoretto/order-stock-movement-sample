@@ -1,13 +1,12 @@
 package com.sibis.order.OrderService.controller;
 
-import com.sibis.order.OrderService.entity.Item;
-import com.sibis.order.OrderService.entity.Order;
-import com.sibis.order.OrderService.entity.StockMovement;
-import com.sibis.order.OrderService.entity.User;
+import com.sibis.order.OrderService.entity.*;
 import com.sibis.order.OrderService.service.ItemService;
 import com.sibis.order.OrderService.service.OrderService;
 import com.sibis.order.OrderService.service.StockMovementService;
 import com.sibis.order.OrderService.service.UserService;
+import com.sibis.order.OrderService.vo.OrderVO;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,8 @@ public class OrderController {
     }
 
     @GetMapping("orders/stock-movement-report")
-    public ResponseEntity<List<Order>> getAllOrdersWithStockMovement() {
-        return ResponseEntity.ok(this.orderService.findAllOrdersWithStockMovements());
+    public ResponseEntity<List<OrderStockMovement>> getAllOrdersWithStockMovement() {
+        return ResponseEntity.ok(this.stockMovementService.findAllOrdersWithStockMovements());
     }
 
     @GetMapping("orders")
@@ -50,26 +49,35 @@ public class OrderController {
 
     @SneakyThrows
     @PostMapping("orders")
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        final Order newOrder = this.orderService.createOrUpdate(order);
+    public ResponseEntity<Order> createOrder(@RequestBody OrderVO orderVO) {
+        final Order newOrder = this.orderService.create(orderVO);
 
-        log.info(String.format("New Order values are: %s", order));
+        log.info(String.format("New Order values are: %s", orderVO));
 
         return ResponseEntity.ok(newOrder);
     }
 
-    @PutMapping("orders")
-    public ResponseEntity<Order> updateOrder(@RequestBody Order order) throws Exception {
+    @SneakyThrows
+    @PutMapping("orders/{orderID}/{quantity}/{status}/update")
+    public ResponseEntity<Order> updateOrder(
+            @NonNull @PathVariable Long orderID,
+            @NonNull @PathVariable Integer quantity,
+            @NonNull @PathVariable EnumOrderStatus status)  {
 
-        final Order updateOrder = this.orderService.createOrUpdate(order);
+        final Order updateOrder = this.orderService
+                .update(orderID,quantity,status);
 
-        log.info(String.format("Update Order values %s", order));
+        log.info(
+                String.format(
+                        "Update Order values %s",
+                        updateOrder)
+        );
 
         return ResponseEntity.ok(updateOrder);
     }
 
-    @DeleteMapping("orders")
-    public ResponseEntity<Boolean> deleteOrder(@RequestBody Long orderID) {
+    @DeleteMapping("orders/{orderID}/delete")
+    public ResponseEntity<Boolean> deleteOrder(@PathVariable Long orderID) {
         this.orderService.delete(orderID);
         return ResponseEntity.ok(true);
     }
@@ -106,8 +114,8 @@ public class OrderController {
         return ResponseEntity.ok(updatedItem);
     }
 
-    @DeleteMapping("itens")
-    public ResponseEntity<Boolean> deleteItem(@RequestBody Long itemID) {
+    @DeleteMapping("itens/{itemID}/delete")
+    public ResponseEntity<Boolean> deleteItem(@PathVariable Long itemID) {
         this.itensService.delete(itemID);
         return ResponseEntity.ok(true);
     }
@@ -144,8 +152,8 @@ public class OrderController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping("users")
-    public ResponseEntity<Boolean> delete(@RequestBody Long userID) {
+    @DeleteMapping("users/{userID}/delete")
+    public ResponseEntity<Boolean> delete(@PathVariable Long userID) {
         this.userService.delete(userID);
         return ResponseEntity.ok(true);
     }
@@ -182,8 +190,8 @@ public class OrderController {
         return ResponseEntity.ok(updatedStock);
     }
 
-    @DeleteMapping("stock-movements")
-    public ResponseEntity<Boolean> deleteStockMovement(@RequestBody Long stockMovementID) {
+    @DeleteMapping("stock-movements/{stockMovementID}/delete")
+    public ResponseEntity<Boolean> deleteStockMovement(@PathVariable Long stockMovementID) {
         this.stockMovementService.delete(stockMovementID);
         return ResponseEntity.ok(true);
     }

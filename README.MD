@@ -64,3 +64,7 @@ sudo docker-compose up -d
 ```
 
 ### How to access Microservice endpoints
+
+Postman documentation:
+https://documenter.getpostman.com/view/5116892/2s9YJXYPqa
+

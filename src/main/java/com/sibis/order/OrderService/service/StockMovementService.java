@@ -2,6 +2,7 @@ package com.sibis.order.OrderService.service;
 
 import com.sibis.order.OrderService.entity.StockMovement;
 import com.sibis.order.OrderService.repository.StockMovementRepository;
+import com.sibis.order.OrderService.entity.OrderStockMovement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,9 @@ public class StockMovementService {
     @Transactional
     public StockMovement createOrUpdate(StockMovement s) {
         return this.stockMovementRepository.save(s);
+    }
+    public List<OrderStockMovement> findAllOrdersWithStockMovements() {
+        return this.stockMovementRepository.findOrderStockMovements();
     }
 
     @Transactional

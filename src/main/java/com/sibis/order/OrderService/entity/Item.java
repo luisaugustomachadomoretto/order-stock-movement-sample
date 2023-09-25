@@ -18,6 +18,6 @@ public class Item {
     private Long id;
 
     @NonNull
-    @Column(name = "name",nullable = false)
+    @Column(name = "name",nullable = false,unique = true)
     private String name;
 }
